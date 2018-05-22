@@ -20,12 +20,11 @@ app.get('/', function (req, res) {
     var horizontalPos = ((vector[1] - zeroVector[1]) / width[1]) * 1000 + ((vector[0] - zeroVector[0]) / height[0]) * height[1] * 1000;
     console.log(((vector[0] - zeroVector[0]) / height[0]) * height[1] * 1000);
     console.log(horizontalPos);
-    res.render('index', { title: 'ㄏㄏ', content: '<h2>hello</h2>', list: ['mark', 'tom'], vector:[verticalPos-21,horizontalPos-25] });
+    res.render('index', { title: 'ㄏㄏ', content: '<h2>hello</h2>', list: ['mark', 'tom'], vector:[verticalPos-21,horizontalPos-25], jsonMessage: vector });
 })
 
 client.on('connect', function () {
     client.subscribe('nukbike');
-    client.publish('nukbike', '{"id":1,"lat":22.734229,"long":120.285300}');
 })
 
 client.on('message', function (topic, message) {

@@ -17,9 +17,20 @@
     </style>
 </head>
 <body>
-    <div class="map" style="position:relative;display:inline-block;">
+    <div class="map" style="position:relative;float:left;">
         <img src="img/map.gif" style="width:1000px;height:705px;" alt="">
         <div id="bike" style="bottom:<%=vector[0]%>px;left:<%=vector[1]%>px;"></div>
+    </div>
+    <div class="position" style="float:left;">
+        <% if(jsonMessage[0] != 0){ %>
+            <h1>腳踏車1現在位置</h1>
+            <h2>經度：
+                <%=jsonMessage[0]%>
+            </h2>
+            <h2>緯度：
+                <%=jsonMessage[1]%>
+            </h2>
+            <%}%>
     </div>
     
 </body>
