@@ -130,7 +130,7 @@ app.get('/', function (req, res) {
 })
 
 client.on('connect', function () {
-    client.subscribe('nukbike');
+    client.subscribe('GPS');
 })
 
 client.on('message', function (topic, message) {
