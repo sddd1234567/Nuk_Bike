@@ -5,7 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <style>
+        body{
+            font-family: "微軟正黑體";
+            background: bisque;
+        }
         #bike{
             width:50px;
             height:50px;
@@ -14,24 +23,253 @@
             border-radius:25px;
             position:absolute;
         }
+        #bike-icon{
+            color: deepskyblue;
+            font-size: 50px;
+            position:absolute;
+            display:inline-block;
+        }
+        .header{
+            padding: 30px 0px 30px 0px;
+        }
+        .header h1{
+            font-weight: bold;
+            font-size: 50px;
+            line-height: 50px;
+            color: brown;
+        }
+        a{
+            color: black;
+        }
+        .nav-item .nav-link.active{
+            background-color: #3c3c3c;
+            border-radius: unset;
+        }
+        a:hover{
+            color: gray;
+        }
+        .table td, .table th {
+            border-top: 1px solid #751212;
+        }
+        .table thead th {
+            border-bottom: 2px solid #751212;
+        }
+        p{
+            margin-bottom: unset;
+        }
+        .footer p{
+            text-align: center;
+            color: white;
+        }
     </style>
 </head>
-<body>
-    <div class="map" style="position:relative;float:left;">
-        <img src="img/map.gif" style="width:1000px;height:705px;" alt="">
-        <div id="bike" style="bottom:<%=vector[0]%>px;left:<%=vector[1]%>px;"></div>
+<body>    
+    <div class="container-fluid">
+        <div class="header">
+            <h1>高大找愛腳</h1>
+        </div>
+        <div class="choice">
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link contact-nav active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home"
+                        aria-selected="true">各院分布</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link contact-nav" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile"
+                        aria-selected="false">即時位置</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                    <div class="row">
+                        <div class="map col-12 col-md-8" style="position:relative;float:left;">
+                            <img src="img/map.gif" style="width:1000px;height:705px;" alt="">
+                            <% for(bikeIndex in vector){ %>
+                                <i class="fas fa-bicycle" id="bike-icon" style="bottom:<%=vector[bikeIndex][0]%>px;left:<%=vector[bikeIndex][1]%>px;"></i>
+                            <%}%>
+                            </div>
+                        <% var region = {}; %>
+                        <%for(bikeIndex in jsonMessage){%>
+                            <%if(jsonMessage[bikeIndex].region != null){%>
+                                <%if(region[jsonMessage[bikeIndex].region] == undefined){%>
+                                    <%region[jsonMessage[bikeIndex].region] = 1;%>
+                                <%}else{%>
+                                    <%region[jsonMessage[bikeIndex].region]++;%>
+                                <%}%>
+                            <%}%>
+                        <%}%>
+                        <div class="info col-12 col-md-4">
+                            <table class="table table-hover" style = "margin-top:30px;">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">位置</th>
+                                        <th scope="col">數量</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">管理學院</th>
+                                        <td>
+                                            <%if(region["management"] == undefined){%>
+                                                0
+                                            <%}else{%>
+                                                <%=region["management"]%>
+                                            <%}%>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">法學院</th>
+                                        <td>
+                                            <%if(region["law"] == undefined){%>
+                                                0
+                                            <%}else{%>
+                                                <%=region["law"]%>
+                                            <%}%>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">圖書資訊大樓</th>
+                                        <td>
+                                            <%if(region["library"] == undefined){%>
+                                                0
+                                            <%}else{%>
+                                                <%=region["library"]%>
+                                            <%}%>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">理學院</th>
+                                        <td>
+                                            <%if(region["science"] == undefined){%>
+                                                0
+                                                <%}else{%>
+                                                    <%=region["science"]%>
+                                                        <%}%>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">行政大樓</th>
+                                        <td>
+                                            <%if(region["admin"] == undefined){%>
+                                                0
+                                                <%}else{%>
+                                                    <%=region["admin"]%>
+                                                        <%}%>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">綜合大樓</th>
+                                        <td>
+                                            <%if(region["complex"] == undefined){%>
+                                                0
+                                                <%}else{%>
+                                                    <%=region["complex"]%>
+                                                        <%}%>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">工學院</th>
+                                        <td>
+                                            <%if(region["engineer"] == undefined){%>
+                                                0
+                                                <%}else{%>
+                                                    <%=region["engineer"]%>
+                                                        <%}%>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">運健休大樓</th>
+                                        <td>
+                                            <%if(region["health"] == undefined){%>
+                                                0
+                                                <%}else{%>
+                                                    <%=region["health"]%>
+                                                        <%}%>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">人文社會科學院</th>
+                                        <td>
+                                            <%if(region["social"] == undefined){%>
+                                                0
+                                                <%}else{%>
+                                                    <%=region["social"]%>
+                                                        <%}%>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">學生宿舍1</th>
+                                        <td>
+                                            <%if(region["dorm1"] == undefined){%>
+                                                0
+                                                <%}else{%>
+                                                    <%=region["dorm1"]%>
+                                                        <%}%>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">學生宿舍2</th>
+                                        <td>
+                                            <%if(region["dorm2"] == undefined){%>
+                                                0
+                                                <%}else{%>
+                                                    <%=region["dorm2"]%>
+                                                        <%}%>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                    <div class="row">
+                        <div class="map col-12 col-md-8" style="position:relative;float:left;">
+                            <img src="img/map.gif" style="width:1000px;height:705px;" alt="">
+                            <% for(bikeIndex in vector){ %>
+                                <i class="fas fa-bicycle" id = "bike-icon" style="bottom:<%=vector[bikeIndex][0]%>px;left:<%=vector[bikeIndex][1]%>px;"></i>
+                            <%}%>
+                        </div>
+                        <div class="position col-12 col-md-4" style="width:100%;">
+                            <table class="table table-hover" style = "margin-top:30px;">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">編號</th>
+                                        <th scope="col">位置</th>
+                                        <th scope="col">經度</th>
+                                        <th scope="col">緯度</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for(bikeIndex in jsonMessage){ %>
+                                        <tr>
+                                            <th scope="row"><%=bikeIndex%></th>
+                                            <td>
+                                                <% if(jsonMessage[bikeIndex].region == "null"){%>
+                                                    --
+                                                <%}else{ %>
+                                                    <%=dic[jsonMessage[bikeIndex].region] %>
+                                                <%}%>
+                                            </td>
+                                            <td><%=jsonMessage[bikeIndex].vector[0]%></td>
+                                            <td><%=jsonMessage[bikeIndex].vector[1]%></td>
+                                        </tr>
+                                    <%}%>
+                                </tbody>
+                            </table>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+    <div class="footer" style = "min-height:100px;background:white;background: #7abec1;">
+        <p>A1044304張廷瑋</p>
+        <p>A1043335 陳冠維</p>
+        <p>A1043345薛希楷</p>
+        <p>A1043303黃炴熾</p>
     </div>
-    <div class="position" style="float:left;">
-        <% if(jsonMessage[0] != 0){ %>
-            <h1>腳踏車1現在位置</h1>
-            <h2>經度：
-                <%=jsonMessage[0]%>
-            </h2>
-            <h2>緯度：
-                <%=jsonMessage[1]%>
-            </h2>
-            <%}%>
-    </div>
-    
 </body>
 </html>
