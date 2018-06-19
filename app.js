@@ -19,10 +19,10 @@ var ranges =
 {
     management:
     {
-        minLat: 22.732822,
-        minLong: 120.287543,
-        maxLat: 22.732738,
-        maxLong: 120.288540
+        minLat: 22.732567,
+        minLong: 120.287562,
+        maxLat: 22.733396,
+        maxLong: 120.288829
     },
     law:
     {
